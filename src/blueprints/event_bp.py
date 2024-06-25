@@ -35,3 +35,26 @@ def create_event():
     return jsonify(new_event.__dict__), 201
 
 
+@event_bp.route("/<int:event_id>", methods=["PUT"])
+def update_event(event_id):
+    event = Event.query.get_or_404(event_id)
+    data = request.json
+    event.title = data.get("title", event.title)
+    event.description = data.get("description", event.description)
+    event.event_datetime = datetime.strptime(
+        data["event_datetime"], "%Y-%m-%d %H:%M:%S"
+    )
+    event.location = data.get("location", event.location)
+    event.organizer_id = data.get("organizer_id", event.organizer_id)
+    event.max_capacity = data.get("max_capacity", event.max_capacity)
+    event.status = data.get("status", event.status)
+    db.session.commit()
+    return jsonify(event.__dict__)
+
+
+@event_bp.route("/<int:event_id>", methods=["DELETE"])
+def delete_event(event_id):
+    event = Event.query.get_or_404(event_id)
+    db.session.delete(event)
+    db.session.commit()
+    return jsonify({"message": "Event deleted successfully"})
