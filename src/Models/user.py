@@ -49,3 +49,7 @@ class Attendee(db.Model):
     status = db.Column(db.String(50), nullable=False)
     name = db.Column(db.String(255), nullable=False)
     contact_details = db.Column(db.String(255), nullable=False)
+
+db.drop_all()
+db.create_all()
+db.commit()
