@@ -1,23 +1,12 @@
 from flask import Blueprint, jsonify, request
 from datetime import datetime
-from .. import db
-from ..models import Event
+from init import db
+from user_bp models import Event
 
 event_bp = Blueprint("event_bp", __name__, url_prefix="/events")
 
 
-@event_bp.route("/", methods=["GET"])
-def get_events():
-    events = Event.query.all()
-    return jsonify([event.__dict__ for event in events])
-
-
-@event_bp.route("/<int:event_id>", methods=["GET"])
-def get_event(event_id):
-    event = Event.query.get_or_404(event_id)
-    return jsonify(event.__dict__)
-
-
+# Create (POST)
 @event_bp.route("/", methods=["POST"])
 def create_event():
     data = request.json
@@ -35,6 +24,21 @@ def create_event():
     return jsonify(new_event.__dict__), 201
 
 
+# Read All (GET)
+@event_bp.route("/", methods=["GET"])
+def get_events():
+    events = Event.query.all()
+    return jsonify([event.__dict__ for event in events])
+
+
+# Read One (GET)
+@event_bp.route("/<int:event_id>", methods=["GET"])
+def get_event(event_id):
+    event = Event.query.get_or_404(event_id)
+    return jsonify(event.__dict__)
+
+
+# Update (PUT)
 @event_bp.route("/<int:event_id>", methods=["PUT"])
 def update_event(event_id):
     event = Event.query.get_or_404(event_id)
@@ -52,6 +56,7 @@ def update_event(event_id):
     return jsonify(event.__dict__)
 
 
+# Delete (DELETE)
 @event_bp.route("/<int:event_id>", methods=["DELETE"])
 def delete_event(event_id):
     event = Event.query.get_or_404(event_id)
