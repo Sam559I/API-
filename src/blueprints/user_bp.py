@@ -51,3 +51,18 @@ def register():
     return jsonify(user_schema.dump(new_user)), 201
 
 
+@user_bp.route("/login", methods=["POST"])
+def login():
+    """
+    Login a user and return an access token.
+    """
+    username = request.json.get("username")
+    password = request.json.get("password")
+
+    user = User.query.filter_by(username=username).first()
+
+    if user and user.verify_password(password):
+        access_token = create_access_token(identity=user.user_id)
+        return jsonify(access_token=access_token), 200
+
+    return jsonify({"msg": "Invalid credentials"}), 401
