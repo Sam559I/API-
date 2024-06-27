@@ -13,3 +13,10 @@ def create_attendee():
     db.session.add(new_attendee)
     db.session.commit()
     return jsonify(new_attendee.__dict__), 201
+
+
+# Read All (GET)
+@attendee_bp.route("/", methods=["GET"])
+def get_attendees():
+    attendees = Attendee.query.all()
+    return jsonify([attendee.__dict__ for attendee in attendees])
