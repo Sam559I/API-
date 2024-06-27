@@ -1,14 +1,11 @@
-import datetime
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from os import environ
-from init
-app = Flask(__name__)
-
-app.config["SQLALCHEMY_DATABASE_URI"] = environ.get("DB_URI")
+from flask_migrate import Migrate
+from flask_jwt_extended import JWTManager
+from flask_marshmallow import Marshmallow
+import os
 
 db = SQLAlchemy(app)
-
 
 def create_app(config_class=Init):
     app = Flask(__name__)
@@ -25,4 +22,3 @@ def create_app(config_class=Init):
 
 
 app = create_app()
-
