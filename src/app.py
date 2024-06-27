@@ -6,20 +6,23 @@ from flask_marshmallow import Marshmallow
 import os
 
 app = Flask(__name__)
+
 db = SQLAlchemy(app)
 
-def create_app(config_class=Init):
-    app = Flask(__name__)
-    app.config.from_object(config_class)
+# Initialize extensions
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+jwt = JWTManager(app)
+ma = Marshmallow(app)
 
-    db.init_app(app)
-    Migrate(app, db)
+# Register blueprints
+from src.blueprints.user_bp import user_bp
+from src.blueprints.event_bp import event_bp
 
-    @app.route("/")
-    def hello():
-        return "1 Test page!"
-
-    return app
+app.register_blueprint(user_bp)
+app.register_blueprint(event_bp)
 
 
-app = create_app()
+@app.route("/")
+def index():
+    return "Welcome to the API!"
