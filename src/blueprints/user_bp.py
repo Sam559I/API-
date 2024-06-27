@@ -1,5 +1,7 @@
+# src/blueprints/user_bp.py
+
 from flask import Blueprint, jsonify, request
-from src.Models.user import User, Event
+from src.Models.user import User, UserSchema, Event, EventSchema
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from src.app import db, jwt
 
@@ -66,3 +68,35 @@ def login():
         return jsonify(access_token=access_token), 200
 
     return jsonify({"msg": "Invalid credentials"}), 401
+
+
+@user_bp.route("/<int:id>", methods=["GET"])
+@jwt_required()
+def get_user(id):
+    """
+    Get user details by ID.
+    Requires JWT authentication.
+    """
+    current_user_id = get_jwt_identity()
+
+    if id != current_user_id:
+        return jsonify({"msg": "Permission denied"}), 403
+
+    user = User.query.get_or_404(id)
+    return jsonify(user_schema.dump(user))
+
+
+@user_bp.route("/<int:user_id>/events", methods=["GET"])
+@jwt_required()
+def get_user_events(user_id):
+    """
+    Get events associated with a user by user ID.
+    Requires JWT authentication.
+    """
+    current_user_id = get_jwt_identity()
+
+    if user_id != current_user_id:
+        return jsonify({"msg": "Permission denied"}), 403
+
+    events = Event.query.filter_by(organizer_id=user_id).all()
+    return jsonify(events_schema.dump(events))
