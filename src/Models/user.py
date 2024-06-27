@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 db = SQLAlchemy()
 
@@ -50,6 +51,26 @@ class Attendee(db.Model):
     name = db.Column(db.String(255), nullable=False)
     contact_details = db.Column(db.String(255), nullable=False)
 
+
+class UserSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = User
+        load_instance = True
+        exclude = ("password_hash",)
+
+
+class EventSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Event
+        load_instance = True
+
+
+class AttendeeSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Attendee
+        load_instance = True
+
+
 db.drop_all()
 db.create_all()
-db.commit()
+db.session.commit()
