@@ -3,7 +3,7 @@
 from flask import Blueprint, jsonify, request
 from src.Models.user import User, UserSchema, Event, EventSchema
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-from src.app import db, jwt
+from src.init import db, jwt
 
 # Define the blueprint
 user_bp = Blueprint("user_bp", __name__, url_prefix="/users")
