@@ -218,7 +218,8 @@ Working in sync with task control, Git has been employed as a strong version con
 
 #### Summary
 
-Certainly! Let's break down the features, purpose, and functionalities of the SQLAlchemy ORM used in the provided Flask application based on the code provided:
+
+## R5 Explain the features, purpose and functionalities of the object-relational mapping system (ORM) used in this app.
 
 ### Features of SQLAlchemy ORM
 
@@ -328,3 +329,529 @@ During project development, the defined models and relationships assist in vario
 4. Scalability and Maintenance:
     * Modularity: Keeping the models modular helps in scaling the application. Adding new features (e.g., event categories, user roles) becomes easier.
     * Maintainability: Clearly defined relationships and models improve code readability and maintainability.
+
+## R8
+
+#### Users
+
+1. **Register User**
+   * **HTTP Verb**: POST
+   * **Route Path**: `/users/register`
+   * **Required Body Data**:
+
+     ```json
+      {
+     
+      "username": "First_User",
+      "email": "firstuser.doe@example.com",
+      "password": "securepassword",
+      "role": "user"
+
+      }
+     ```
+
+   * **Success Response** 201 OK:
+
+     ```json
+      {
+      "username": "First_User",
+      "email": "firstuser.doe@example.com",
+      "password": "securepassword",
+      "role": "user"
+      }
+     ```
+
+   * **Failure Response**:
+   * 409 Conflict:
+
+     ```json
+      {
+         "msg": "User already exists"
+      }
+     ```
+
+   * 400 Bad Request:
+
+     ```json
+      {
+        "msg": "Validation msgs"
+      }
+     ```
+
+   2. **Login User**
+      * **HTTP Verb**: POST
+      * **Route Path**: `/users/login`
+      * **Required Body Data**:
+
+        ```json
+         {
+         "username": "First_User",
+         "password": "securepassword"
+        }
+        ```
+
+      * **Success Response** 200 OK:
+
+        ```json
+         {
+           "token": "<your_jwt_token>"
+         }
+        ```
+
+      * **Failure Response**:
+      * 401 Unauthorized:
+
+        ```json
+        {
+          "msg": "Invalid username or password"
+        }
+        ```
+
+      * 400 Bad Request:
+
+        ```json
+        {
+          "msg": "Validation msgs"
+        }
+        ```
+
+3. **Get All Users**
+   * **HTTP Verb**: GET
+   * **Route Path**: `/users/`
+   * **Required Header**: `Authorization: Bearer <your_jwt_token>`
+
+   * **Success Response** 200 OK:
+
+     ```json
+     {
+       "username": "First_User",
+      "email": "firstuser.doe@example.com",
+      "password": "securepassword",
+      "role": "user"
+     }
+     ```
+
+   * **Failure Response**:
+   * 403 Forbidden:
+
+     ```json
+     {
+       "msg": "You must be an admin to access "
+     }
+     ```
+
+   * 400 Unauthorized:
+
+     ```json
+     {
+       "msg": "Validation msgs"
+     }
+     ```
+
+4. **Get One User**
+   * **HTTP Verb**: GET
+   * **Route Path**: `/users/<int:id>`
+   * **Required Header**: `Authorization: Bearer <token>`
+
+   * **Success Response** 200 OK:
+
+     ```json
+      {
+       "username": "First_User",
+      "email": "firstuser.doe@example.com",
+      "password": "securepassword",
+      "role": "user"
+      }
+     ```
+
+   * **Failure Response**:
+   * 404:
+
+     ```json
+     {
+       "msg": "User not found"
+     }
+     ```
+
+   * 400 Unauthorized:
+
+     ```json
+     {
+       "msg": "Missing Authorization Header"
+     }
+     ```
+
+5. **Update User**
+   * **HTTP Verb**: PUT/PATCH
+   * **Route Path**: `/users/<int:id>`
+   * **Required Header**: `Authorization: Bearer <token>` (Owner only)
+
+   * **Required Body Data**:
+
+     ```json
+      {
+        "username": "updatedusername",
+        "email": "updatedemail@example.com",
+        "password": "newpassword",
+        "role": "user"
+      }
+     ```
+
+   * **Success Response** 200 OK:
+
+     ```json
+      {
+        "username": "updatedusername",
+        "email": "updatedemail@example.com",
+        "password": "newpassword",
+        "role": "user"
+      }
+     ```
+
+   * **Failure Response**:
+   * 403 Forbidden:
+
+     ```json
+     {
+       "msg": "resource un accessible"
+     }
+     ```
+
+   * 400 Unauthorized:
+
+     ```json
+     {
+       "msg": "Validation msgs"
+     }
+     ```
+
+   * 409 Conflict:
+
+     ```json
+     {
+       "msg": "Username already exists"
+     }
+     ```
+
+6. **Delete User**
+   * **HTTP Verb**: DELETE
+   * **Route Path**: `/users/<int:id>`
+   * **Required Header**: `Authorization: Bearer <token>`
+
+   * **Success Response** 204 No Content:
+
+     ```json
+     {}
+     ```
+
+   * **Failure Response**:
+   * 403 Forbidden:
+
+     ```json
+     {
+      "msg": "resource un accessible"
+     }
+     ```
+
+   * 404 Not Found:
+
+     ```json
+     {
+       "msg": "Not Found"
+     }
+     ```
+
+#### Events
+
+1. **Get All events**
+   * **HTTP Verb**: GET
+   * **Route Path**: `/events/`
+   * **Required Header**: `Authorization: Bearer <token>`
+   * Retrieves all events from the database
+
+   * **Success Response** 200 OK:
+
+     ```json
+      {
+        "date_time": "2024-07-01T10:00:00",
+        "description": "This is a test event.",
+        "event_id": 2,
+        "location": "Test Location",
+        "max_capacity": 100,
+        "status": "upcoming",
+        "title": "Test Event"
+      }
+     ```
+
+   * **Failure Response** 401 Unauthorized:
+
+     ```json
+     {
+       "msg": "Missing Authorization Header"
+     }
+     ```
+
+2. **Get One Event**
+   * **HTTP Verb**: GET
+   * **Route Path**: `/events/<int:id>`
+   * **Required Header**: `Authorization: Bearer <token>`
+   * Retrieves a specific event by its event_ID
+
+   * **Success Response** 200 OK:
+
+     ```json
+      {
+        "date_time": "2024-07-01T10:00:00",
+        "description": "This is a test event.",
+        "event_id": 2,
+        "location": "Test Location",
+        "max_capacity": 100,
+        "status": "upcoming",
+        "title": "Test Event"
+      }
+     ```
+
+   * **Failure Response** 404 Not Found:
+
+     ```json
+     {
+       "msg": "Event not found"
+     }
+     ```
+
+3. **Create Event**
+   * **HTTP Verb**: POST
+   * **Route Path**: `/events/`
+   * **Required Header**: `Authorization: Bearer <token>`
+   * Creates a new Event in the database
+
+   * **Required Body Data**:
+
+     ```json
+     {
+      "title": "Example Event",
+      "description": "This is a test event.",
+      "date_time": "2024-07-01T10:00:00",
+      "location": "Example Location",
+      "organizer_id": 1,
+      "max_capacity": 100,
+      "status": "active"
+      }
+
+     ```
+
+   * **Success Response** 201 Created:
+
+     ```json
+      {
+      "title": "Example Event",
+      "description": "This is a test event.",
+      "date_time": "2024-07-01T10:00:00",
+      "location": "Example Location",
+      "organizer_id": 1,
+      "max_capacity": 100,
+      "status": "active"
+      }
+
+     ```
+
+   * **Failure Response** 401 Unauthorized:
+
+     ```json
+     {
+       "msg": "Unauthorized"
+     }
+     ```
+
+4.**Update Event**
+
+* **HTTP Verb**: PUT/PATCH
+* **Route Path**: `/events/<int:id>`
+* **Required Header**: `Authorization: Bearer <token>`
+* Updates an existing event in the database.
+
+* **Required Body Data**:
+
+     ```json
+     {
+      "title": "Updated Event Title",
+      "description": "Updated event description.",
+      "date_time": "2024-07-02T15:00:00",
+      "location": "Updated Location",
+      "max_capacity": 120,
+      "status": "active"
+     }
+
+     ```
+
+* **Success Response** 200 OK:
+  
+     ```json
+      {
+      "title": "Updated Event Title",
+      "description": "Updated event description.",
+      "date_time": "2024-07-02T15:00:00",
+      "location": "Updated Location",
+      "max_capacity": 120,
+      "status": "active"
+      }
+     ```
+
+* **Failure Response** 403 Forbidden:
+
+     ```json
+      {
+        "msg": "Event not Updated"
+      }
+
+* **Failure Response** 401 Unauthorized:
+
+     ```json
+      {
+        "msgs": "Missing Authorization header"
+      }
+     ```
+
+6. **Delete Event**
+   * **HTTP Verb**: DELETE
+   * **Route Path**: `/events/<int:id>`
+   * **Required Header**: `Authorization: Bearer <token>`
+   * Deletes an event  from the database.
+
+   * **Success Response** 204 No Content:
+
+     ```json
+     {}
+     ```
+
+   * **Failure Response** 403 Forbidden:
+
+     ```json
+     {
+       "msg": "Event not deleted"
+     }
+     ```
+
+   * **Failure Response** 401 Unauthorized:
+
+     ```json
+     {
+       "msg": "Missing Authorization Header"
+     }
+     ```
+
+### Attendees
+
+1. **Create Attendee**
+   * **HTTP Verb**: POST
+   * **Route Path**: `/attendees/`
+   * **Required Header**: `Authorization: Bearer <token>`
+   * Creates a new attendee for an event in the database.
+
+   * **Required Body Data**:
+
+     ```json
+     {
+       "event_id": 1,
+       "user_id": 1,
+       "status": "registered",
+       "name": "Attendee First",
+       "contact_details": "Attendee.doe@example.com"
+     }
+     ```
+
+   * **Success Response** 201 Created:
+
+     ```json
+     {
+       "attendee_id": 1,
+       "event_id": 1,
+       "user_id": 1,
+       "registration_date": "2024-06-30T09:17:12.635720",
+       "status": "registered",
+       "name": "Attendee First",
+       "contact_details": "Attendee.doe@example.com"
+     }
+     ```
+
+   * **Failure Response** 401 Unauthorized:
+
+     ```json
+     {
+       "msg": "Unauthorized"
+     }
+     ```
+
+2. **Update Attendee**
+   * **HTTP Verb**: PUT/PATCH
+   * **Route Path**: `/attendees/<int:id>`
+   * **Required Header**: `Authorization: Bearer <token>`
+   * Updates an existing attendee in the database.
+
+   * **Required Body Data**:
+
+     ```json
+     {
+       "status": "cancelled"
+     }
+     ```
+
+   * **Success Response** 200 OK:
+
+     ```json
+     {
+       "attendee_id": 1,
+       "event_id": 1,
+       "user_id": 1,
+       "registration_date": "2024-06-30T09:17:12.635720",
+       "status": "cancelled",
+       "name": "Attendee First",
+       "contact_details": "Attendee.doe@example.com"
+     }
+     ```
+
+   * **Failure Response**:
+     * 403 Forbidden:
+
+       ```json
+       {
+         "msg": "Attendee not Updated"
+       }
+       ```
+
+     * 401 Unauthorized:
+
+       ```json
+       {
+         "msg": "Missing Authorization header"
+       }
+       ```
+
+3. **Delete Attendee**
+   * **HTTP Verb**: DELETE
+   * **Route Path**: `/attendees/<int:id>`
+   * **Required Header**: `Authorization: Bearer <token>`
+   * Deletes an attendee from the database.
+
+   * **Success Response** 204 No Content:
+
+     ```json
+     {}
+     ```
+
+   * **Failure Response**:
+     * 403 Forbidden:
+
+       ```json
+       {
+         "msg": "Attendee not deleted"
+       }
+       ```
+
+     * 401 Unauthorized:
+
+       ```json
+       {
+         "msg": "Missing Authorization Header"
+       }
+       ```
