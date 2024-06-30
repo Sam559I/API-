@@ -196,3 +196,31 @@ Describe the way tasks are allocated and tracked in your project.
 #### Summary
 
 For applications that need strong relational database features, can grow in size and require transactional consistency, PostgreSQL is a good option. It provides lots of functions for managing data and improving performance. Also, it has a helpful community and can be extended easily. But developers must consider the difficulty of setting up system, managing administration tasks as well as dealing with problems linked to concurrency and resource control.
+
+## R6 Design an entity relationship diagram (ERD) for this app’s database, and explain how the relations between the diagrammed models will aid the database design.
+
+![alt text](docs/ERD.png)
+
+### ERD Overview
+1. Entities:
+    * User: Contains user information like Username, Email, Password, and Role.
+    Organizer: Represents users who manage events, linked to User.
+    * Events: Details about events, including Title, Description, DateTime, Location, Capacity, and Status.
+    * Attendees: Tracks event attendance, with Registration Date and Status.
+2. Relationships:
+    * User to Organizer: One-to-one relationship; each organizer is a user.
+    * User to Attendees: One-to-many relationship; users can be attendees for multiple events.
+    * Events to Attendees: Many-to-many relationship; events have multiple attendees, and users can attend multiple events.
+    * Organizer to Events: One-to-many relationship; each organizer manages multiple events.
+
+### How Relationships Aid Database Design
+1. Data Integrity:
+    * Foreign keys enforce data consistency, ensuring that every organizer and attendee corresponds to a valid user.
+2. Scalability:
+    * Supports multiple events and attendees without data duplication, accommodating growth in users and events.
+3. Flexibility:
+    * Users can serve multiple roles (attendee or organizer), simplifying user management and permissions.
+4. Normalization:
+    * Reduces data redundancy by organizing data into related tables, simplifying maintenance and updates.
+5. Security:
+    * Role-based access can be implemented, securing sensitive information based on user roles.
