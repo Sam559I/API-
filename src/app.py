@@ -1,6 +1,6 @@
 from flask import Flask
 import os
-from extensions import db, migrate, jwt, ma
+from src.extensions import db, migrate, jwt, ma
 from dotenv import load_dotenv
 
 

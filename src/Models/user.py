@@ -2,8 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
-
-db = SQLAlchemy()
+from src.extensions import db
 
 
 class User(db.Model):
@@ -69,8 +68,3 @@ class AttendeeSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Attendee
         load_instance = True
-
-
-db.drop_all()
-db.create_all()
-db.session.commit()
