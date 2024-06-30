@@ -36,9 +36,32 @@ The suggested app tackles these problems head-on with a robust event management 
 This app makes it easier to organize and handle events, giving a simple solution for those who arrange the event as well as people participating in it. It manages event details, user information and registration processes effectively. The app is easy to use, dealing with typical problems encountered when managing an event
 
 ## R2 Describe the way tasks are allocated and tracked in your project
-	
+For my project, I used GitHub Projects and Trello to manage the task allocation and tracking. 
 
-Describe the way tasks are allocated and tracked in your project.
+Along with this, I kept a Trello board for wider view and adaptability in organizing tasks. In Trello, you can make the job look more dynamic by using lists to show stages like Backlog or In Progress Testing Completed. Every task card on Trello had detailed descriptions, attachments and links to related GitHub issues or pull requests for smooth movement between project management and code creating areas.
+
+I used a method of making due dates that can be changed in GitHub Projects and Trello. This helped to manage tasks in an agile way, allowing me to put importance on tasks according to their time limits and the project's movement instead of only following fixed deadlines. The ability for flexibility was very important so as to adjust with iterative development processes and changing priority rankings.
+
+Working in sync with task control, Git has been employed as a strong version controlling method. I made constant commits for keeping records of project alterations, guaranteeing ongoing backup and monitoring my performance speed during the assignment. The version history of Git gave me important understanding about how the project is progressing and acted as a stopover to fine-tune workflows while improving strategies for managing tasks efficiently.
+
+
+![alt text](<docs/Day 1.png>)
+
+![alt text](<docs/Day 2.png>)
+
+![alt text](<docs/Day 3.png>)
+
+![alt text](<docs/Day 4.png>)
+
+![alt text](<docs/Day 5.png>)
+
+![alt text](<docs/Day 6.png>)
+
+![alt text](docs/Day7.png)
+
+![alt text](<docs/Day 8.png>)
+
+![alt text](<docs/Day 9 .png>)
 
 ## R3 List and explain the third-party services, packages and dependencies used in this app.
 
@@ -224,3 +247,40 @@ For applications that need strong relational database features, can grow in size
     * Reduces data redundancy by organizing data into related tables, simplifying maintenance and updates.
 5. Security:
     * Role-based access can be implemented, securing sensitive information based on user roles.
+
+## R7 Explain the implemented models and their relationships, including how the relationships aid the database implementation. This should focus on the database implementation AFTER coding has begun, eg. during the project development phase.
+
+Relationships and Their Benefits
+1. One-to-Many Relationship (Event to Attendees):
+    * Definition: An Event can have multiple Attendees, but each Attendee is associated with one Event.
+    * Implementation: This is implemented using db. relationship in the Event model and db.ForeignKey in the Attendee model.
+        * Benefits:
+            * Data Organization: Allows the database to manage the list of attendees for each event efficiently.
+            * Query Optimization: Facilitates querying all attendees for a specific event, which is useful for event management and reporting.
+            Integrity: Ensures that an attendee cannot exist without an associated event, maintaining data integrity.
+
+2. One-to-Many Relationship (User to Attended Events):
+    * Definition: A User can attend multiple Events, but each Attendee record is associated with one User.
+    * Implementation: This is implemented using db.relationship in the User model and db.ForeignKey in the Attendee model.
+        * Benefits:
+            * User Activity Tracking: Helps in tracking which events a user has attended.
+            * Personalization: Facilitates personalized user experiences by analyzing user participation in events.
+            * Data Consistency: Ensures that attendance records are consistently linked to valid users.
+
+Practical Usage During Project Development
+During project development, the defined models and relationships assist in various aspects:
+1. CRUD Operations:
+    * Create: Easily create events and associate attendees with them. The relationships ensure that attendees are linked to valid events and users.
+    * Read: Efficiently retrieve events along with their attendees, or fetch all events a specific user has attended.
+    * Update: Update event details or attendee information while maintaining relational integrity.
+    * Delete: Safely delete events, ensuring that associated attendees are also handled appropriately (e.g., using cascading deletes if configured).
+
+2. Data Validation and Integrity:
+    * Foreign Keys: Ensure that references to events and users in the Attendee table are valid.
+    * Constraints: Enforce constraints such as unique user emails, preventing duplicate entries.
+3. Performance Optimization:
+    * Indexes: Use indexes on foreign keys (event_id and user_id) to speed up queries.
+    * Lazy Loading: Optimize performance by loading related data only when needed, using the lazy=True option in relationships.
+4. Scalability and Maintenance:
+    * Modularity: Keeping the models modular helps in scaling the application. Adding new features (e.g., event categories, user roles) becomes easier.
+    * Maintainability: Clearly defined relationships and models improve code readability and maintainability.
