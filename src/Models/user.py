@@ -1,4 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
@@ -11,7 +11,7 @@ class User(db.Model):
     username = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
-    role = db.Column(db.String(50), nullable=False)
+    role = db.Column(db.String(50), nullable=True)
     events = db.relationship("Event", backref="organizer", lazy=True)
     attendees = db.relationship("Attendee", backref="user", lazy=True)
 

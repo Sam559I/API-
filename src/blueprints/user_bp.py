@@ -1,6 +1,7 @@
 # src/blueprints/user_bp.py
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+
 from flask import Blueprint, jsonify, request
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from src.Models.user import User, UserSchema, Event, EventSchema
 from src.app import db
 
@@ -13,9 +14,8 @@ users_schema = UserSchema(many=True)
 event_schema = EventSchema()
 events_schema = EventSchema(many=True)
 
+
 # Routes
-
-
 @user_bp.route("/", methods=["GET"])
 def get_users():
     """
