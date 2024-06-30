@@ -151,3 +151,48 @@ Describe the way tasks are allocated and tracked in your project.
 
     Purpose: WSGI utilities.
     Use: Offers various utilities for creating WSGI-compatible web applications, including request/response handling.
+
+## R4 Explain the benefits and drawbacks of this app’s underlying database system.
+
+#### Benefits
+
+1. #### Relational Database Capabilities:
+
+* Data Integrity: PostgreSQL keeps data integrity using constraints like primary keys, foreign keys, and others that help in maintaining dependable relationships between tables (for instance Event, User, Attendee).
+
+* ACID Compliance: This means it is reliable for transactions (Atomicity, Consistency, Isolation, Durability), which are very important in keeping data consistency within multiple step operations.
+
+2. #### Scalability and Performance:
+
+* Horizontal Scalability: This can be made to scale horizontally by methods such as sharding and replication, which distribute data across many nodes for better capacity and performance.
+
+* Advanced Indexing: This allows for different methods of indexing (like B-tree, GIN, GiST) which are very useful in enhancing the speed of queries. It is especially advantageous when dealing with complicated queries and big datasets.
+
+3. #### Extensibility and Ecosystem:
+
+* Large ecosystem: Brings many extensions and integrations (such as spatial data using PostGIS, full-text search via pg_trgm) that boost functionality and adaptability of applications.
+
+* Active community: PostgreSQL has a big and active community that provides support, plugins, and ongoing enhancements.
+
+#### Drawbacks
+
+1. #### Setup and Administration Complexity:
+
+* Initial setup: Configuring PostgreSQL could be more complicated compared to simpler databases, needing knowledge in database administration and possibly longer time for setting up.
+
+* Administration: Needs regular care (such as backups, performance adjustments, security upgrades) to guarantee best functioning and dependability.
+
+2. #### Concurrency and Locking:
+
+* Managing concurrency: Managing concurrent access to data and making sure locking methods are used properly is crucial for preventing contention and loss in performance.
+
+* Transaction isolation levels: Selection of right levels of isolation (like READ COMMITTED, REPEATABLE READ) for achieving a trade-off between data consistency and performance.
+
+3. Resource Consumption:
+
+* Operations that require a lot of resources: Certain advanced features and query optimizations could use more resources like CPU or memory, so they need to be properly provisioned and checked.
+
+
+#### Summary
+
+For applications that need strong relational database features, can grow in size and require transactional consistency, PostgreSQL is a good option. It provides lots of functions for managing data and improving performance. Also, it has a helpful community and can be extended easily. But developers must consider the difficulty of setting up system, managing administration tasks as well as dealing with problems linked to concurrency and resource control.
