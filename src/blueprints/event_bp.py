@@ -9,22 +9,19 @@ event_schema = EventSchema()
 events_schema = EventSchema(many=True)
 
 
-# Create (POST)
 @event_bp.route("/", methods=["POST"])
 def create_event():
     data = request.json
 
-    # Check if 'event_datetime' is present in the data
-    if "event_datetime" not in data:
-        return jsonify({"error": "'event_datetime' field is required"}), 400
+    # Check if 'date_time' is present in the data
+    if "date_time" not in data:
+        return jsonify({"error": "'date_time' field is required"}), 400
 
     try:
         new_event = Event(
             title=data["title"],
             description=data["description"],
-            event_datetime=datetime.strptime(
-                data["event_datetime"], "%Y-%m-%d %H:%M:%S"
-            ),
+            date_time=datetime.strptime(data["date_time"], "%Y-%m-%dT%H:%M:%S"),
             location=data["location"],
             organizer_id=data["organizer_id"],
             max_capacity=data["max_capacity"],
@@ -32,7 +29,6 @@ def create_event():
         )
         db.session.add(new_event)
         db.session.commit()
-        # Serialize the new_event object using EventSchema
         result = event_schema.dump(new_event)
         return jsonify(result), 201
     except KeyError as e:
