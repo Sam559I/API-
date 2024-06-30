@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from datetime import datetime
-from src.init import db, jwt
+from src.app import db
 from src.blueprints.user_bp import Event
 
 event_bp = Blueprint("event_bp", __name__, url_prefix="/events")

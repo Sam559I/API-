@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from src.init import db, jwt
+from src.app import db
 from src.Models.user import Attendee
 
 attendee_bp = Blueprint("attendee_bp", __name__, url_prefix="/attendees")

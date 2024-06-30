@@ -1,4 +1,7 @@
-from init import create_app
+from flask import Flask
+import os
+from extensions import db, migrate, jwt, ma
+from dotenv import load_dotenv
 
 
 def create_app():
